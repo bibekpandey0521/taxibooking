@@ -125,68 +125,81 @@
 				<div class="container_12">
 					<div class="grid_5">
 						<h3>Booking Form</h3>
-						<form id="bookingForm">
+						<h4 th:text="${message}"></h4>
+						<form id="bookingForm" th:action=@{/bookingform} method="post" th:object="${bookingForm}">
 							<div class="fl1">
 								<div class="tmInput">
-									<input name="Name" placeHolder="Name:" type="text" data-constraints='@NotEmpty @Required @AlphaSpecial'>
+									<input name="Name" th:value="${bookingForm.name}" placeHolder="Name:"  type="text" data-constraints='@NotEmpty @Required @AlphaSpecial'>
+									<span style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 								</div>
 								<div class="tmInput">
-									<input name="From" placeHolder="From:" type="text" data-constraints="@NotEmpty @Required ">
+									<input name="source" th:value="${bookingForm.source}" placeHolder="From:" type="text" data-constraints="@NotEmpty @Required ">
+									<span style="color:red" th:if="${#fields.hasErrors('source')}" th:errors="*{source}"></span>
 								</div>
 							</div>
 							<div class="fl1">
 								<div class="tmInput">
-									<input name="Email" placeHolder="Email:" type="text" data-constraints="@NotEmpty @Required @Email">
+									<input name="Email" th:value="${bookingForm.email}" placeHolder="Email:" type="text" data-constraints="@NotEmpty @Required @Email">
+									<span style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
 								</div>
 								<div class="tmInput mr0">
-									<input name="To" placeHolder="To:" type="text" data-constraints="@NotEmpty @Required">
+									<input name="destination"  th:value="${bookingForm.destination}"  placeHolder="To:"  type="text" data-constraints="@NotEmpty @Required">
+									<span style="color:red" th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}"></span>
 								</div>
 							</div>
 							<div class="clear"></div>
 							<strong>Time</strong>
 							<div class="tmInput">
-								<input name="Time" placeHolder="" type="text" data-constraints="@NotEmpty @Required">
+								<input name="time" th:value="${bookingForm.time}" placeHolder=""  type="time" data-constraints="@NotEmpty @Required">
+								<span style="color:red" th:if="${#fields.hasErrors('time')}" th:errors="*{time}"></span>
 							</div>
 							<div class="clear"></div>
 							<strong>Date</strong>
-							<label class="tmDatepicker">
-								<input type="text" name="Date"	placeHolder='20/05/2014' data-constraints="@NotEmpty @Required @Date">
+							<label >
+								<input type="date" name="date" th:value="${bookingForm.date}"	placeHolder='20/05/2014' data-constraints="@NotEmpty @Required @Date">
+								<span style="color:red" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
 							</label>
+							<span style="color:red" th:if="${#fields.hasErrors('comfort')}" th:errors="*{comfort}"></span>
 							<div class="clear"></div>
 							<div class="tmRadio">
 								<p>Comfort</p>
-								<input name="Comfort" type="radio" id="tmRadio0" data-constraints='@RadioGroupChecked(name="Comfort", groups=[RadioGroup])' checked/>
+								<input name="comfort" value="cheap" th:checked="${bookingForm.comfort=='cheap'}" type="radio" id="tmRadio0" data-constraints='@RadioGroupChecked(name="Comfort", groups=[RadioGroup])' checked/>
 								<span>Cheap</span>
-								<input name="Comfort" type="radio" id="tmRadio1" data-constraints='@RadioGroupChecked(name="Comfort", groups=[RadioGroup])' />
-								<span>Standart</span>
-								<input name="Comfort" type="radio" id="tmRadio2" data-constraints='@RadioGroupChecked(name="Comfort", groups=[RadioGroup])' />
+								<input name="comfort" value="standard" th:checked="${bookingForm.comfort=='standard'}"  type="radio" id="tmRadio1" data-constraints='@RadioGroupChecked(name="Comfort", groups=[RadioGroup])' />
+								<span>Standard</span>
+								<input name="comfort" value="lux" th:checked="${bookingForm.comfort=='lux'}"  type="radio" id="tmRadio2" data-constraints='@RadioGroupChecked(name="Comfort", groups=[RadioGroup])' />
 								<span>Lux</span>
 							</div>
+							<span style="color:red" th:if="${#fields.hasErrors('adult')}" th:errors="*{adult}"></span>
 							<div class="clear"></div>
 							<div class="fl1 fl2">
-								<em>Adults</em>
-								<select name="Adults" class="tmSelect auto" data-class="tmSelect tmSelect2" data-constraints="">
+								<em>Adult</em>
+								<select name="adult" class="tmSelect auto" data-class="tmSelect tmSelect2" data-constraints="">
+									<option th:selected="${bookingForm.adult==1}">1</option>
 									<option>1</option>
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
+									<option th:selected="${bookingForm.adult==2}">2</option>
+									<option th:selected="${bookingForm.adult==3}">3</option>
+									<option th:selected="${bookingForm.adult==4}">4</option>
 								</select>
 								<div class="clear height1"></div>
 							</div>
+							<span style="color:red" th:if="${#fields.hasErrors('children')}" th:errors="*{children}"></span>
 							<div class="fl1 fl2">
 								<em>Children</em>
-								<select name="Children" class="tmSelect auto" data-class="tmSelect tmSelect2" data-constraints="">
+								<select name="children" class="tmSelect auto" data-class="tmSelect tmSelect2" data-constraints="">
+									<option th:selected="${bookingForm.children==0}">0</option>
 									<option>0</option>
-									<option>0</option>
-									<option>1</option>
-									<option>2</option>
+									<option th:selected="${bookingForm.children==1}">1</option>
+									<option th:selected="${bookingForm.children==2}">2</option>
+									<option th:selected="${bookingForm.children==3}">3</option>
 								</select>
 							</div>
 							<div class="clear"></div>
 							<div class="tmTextarea">
-								<textarea name="Message" placeHolder="Message" data-constraints='@NotEmpty @Required @Length(min=20,max=999999)'></textarea>
+								<textarea name="message" th:text="${bookingForm.message}" placeHolder="Message" data-constraints='@NotEmpty @Required @Length(min=20,max=999999)'></textarea>
 							</div>
-							<a href="#" class="btn" data-type="submit">Submit</a>
+							<span style="color:red" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></span>
+							<button  class="btn">Submit</button>
 						</form>
 					</div>
 					<div class="grid_6 prefix_1">
