@@ -1,5 +1,6 @@
 package taxi.booking.project.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,7 +12,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
+	private CustomLogoutHandler customLogoutHandler;
+	@Autowired
+	public void setCustomLogoutHandler(CustomLogoutHandler customLogoutHandler) {
+		this.customLogoutHandler = customLogoutHandler;
+	}
+
 	@Bean
 	PasswordEncoder passwordEncoder()
 	{
@@ -35,8 +41,12 @@ public class SecurityConfig {
 			)
 			
 			.formLogin(form -> form
-				//.loginPage("/login") // if you want custom login page
+				.loginPage("/login") // if you want custom login page
 				.permitAll()
+			)
+			.logout(logout->logout
+					.addLogoutHandler(customLogoutHandler)
+					.logoutUrl("/dologout")
 			);
 			
 		return httpSecurity.build();

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import taxi.booking.project.model.BookingForm;
@@ -72,7 +73,18 @@ public class MyController {
     	m.addAttribute("contactForm",new ContactForm());
         return "contacts";  // resolves to templates/contacts.html
     }
-    
+    @GetMapping("/login")
+    public String adminLoginView(HttpServletRequest request,Model model) 
+    {
+    	ServletContext servletContext = request.getServletContext();  
+    	Object attribute = servletContext.getAttribute("logout");
+    	if(attribute instanceof Boolean) 
+    	{
+    		model.addAttribute("logout",attribute);
+    		servletContext.removeAttribute("logout");
+    	}
+    	return "adminlogin";
+    }
     @PostMapping("contactform")
     public String contactForm(@Valid @ModelAttribute ContactForm contactForm,
     		BindingResult bindingResult,Model m , RedirectAttributes redirectAttributes) {
