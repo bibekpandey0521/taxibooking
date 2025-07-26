@@ -1,4 +1,6 @@
 package taxi.booking.project.service;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,18 @@ public class ContactFormServiceImpl implements ContactFormService{
 	@Override
 	public ContactForm saveContactFormService(ContactForm contactForm) {
 		return contactFormCrud.save(contactForm);
+	}
+
+
+	@Override
+	public List<ContactForm> readAllContactsService() {
+		return contactFormCrud.findAll();
+	}
+
+
+	@Override
+	public void deleteContactService(int id) {
+		contactFormCrud.deleteById(id);
 	}
 
 }
