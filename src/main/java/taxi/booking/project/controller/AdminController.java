@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import taxi.booking.project.model.BookingForm;
 import taxi.booking.project.model.ContactForm;
 import taxi.booking.project.service.AdminCredentialsService;
+import taxi.booking.project.service.BookingFormService;
 import taxi.booking.project.service.ContactFormService;
 
 @Controller
@@ -22,10 +24,16 @@ public class AdminController {
 	
 	private ContactFormService contactFormService;
 	private AdminCredentialsService adminCredentialsService;
+	private BookingFormService bookingFormService;
 	
 	@Autowired
 	public void setAdminCredentialsService(AdminCredentialsService adminCredentialsService) {
 		this.adminCredentialsService = adminCredentialsService;
+	}
+
+	@Autowired
+	public void setBookingFormService(BookingFormService bookingFormService) {
+		this.bookingFormService = bookingFormService;
 	}
 
 	@Autowired
@@ -44,13 +52,29 @@ public class AdminController {
 		);
 		return "admin/readallcontacts";
 	}
-	
+	@GetMapping("readAllBookings")
+	public String readAllBookings(Model model) {
+		List<BookingForm> allBookingsService = bookingFormService.readAllBookingsService(); 
+		System.out.println(allBookingsService);
+		
+		
+		model.addAttribute("allBookings",allBookingsService);
+		return "admin/readallbookings";
+	}
 	@GetMapping("deleteContact/{id}")
 	public String deleteContact(@PathVariable int id,RedirectAttributes redirectAttributes) 
 	{
 		contactFormService.deleteContactService(id);
 		redirectAttributes.addFlashAttribute("message","Contact DELETED SUCCESSFULLY");
 		return "redirect:/admin/readAllContacts";
+	}
+	
+	@GetMapping("deleteBooking/{id}")
+	public String deleteBooking(@PathVariable int id,RedirectAttributes redirectAttributes) 
+	{
+		bookingFormService.deleteBookingService(id);
+		redirectAttributes.addFlashAttribute("message","Booking DELETED SUCCESSFULLY");
+		return "redirect:/admin/readAllBookings";
 	}
 	
 	@GetMapping("changeCredentials")

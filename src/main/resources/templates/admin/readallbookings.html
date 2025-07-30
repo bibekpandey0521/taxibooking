@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Booking Form Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    thead {
+      background-color: #343a40;
+      color: #ffffff;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid #dee2e6;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f1f1f1;
+    }
+    tbody tr:hover {
+      background-color: #e2e6ea;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <table>
+    <caption>Booking Details</caption>
+       <div th:if="${message}" class="alert alert-success text-center" th:text="${message}"></div>
+    
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Source</th>
+        <th>Email</th>
+        <th>Destination</th>
+        <th>Time</th>
+        <th>Date</th>
+        <th>Comfort</th>
+        <th>Adult</th>
+        <th>Children</th>
+        <th>Message</th>
+        <td>Action</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each=" booking : ${allBookings}" >
+      	<td th:text="${booking.id}"></td>
+        <td th:text="${booking.name}"></td>
+        <td th:text="${booking.source}"></td>
+        <td th:text="${booking.destination}"></td>
+        <td th:text="${booking.time}"></td>
+        <td th:text="${booking.date}"></td>
+        <td th:text="${booking.comfort}"></td>
+        <td class= "center" th:text="${booking.adult}"></td>
+        <td class="center" th:text="${booking.children}"></td>
+        <td th:text="${booking.message}"></td>
+        <td> 
+        	<a th:href="@{/admin/deleteBooking/{id} (id=${booking.id}) }">DELETE
+        	</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
