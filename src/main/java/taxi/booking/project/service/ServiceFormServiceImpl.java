@@ -1,6 +1,7 @@
 package taxi.booking.project.service;
 
 import java.io.FileOutputStream;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,12 @@ public class ServiceFormServiceImpl implements ServiceFormService {
 		}
 		
 		return save;
+	}
+
+	@Override
+	public List<ServiceForm> readAllServices() {
+		
+		return serviceFormCrud.findAll();
 	}
 
 

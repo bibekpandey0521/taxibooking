@@ -1,5 +1,7 @@
 package taxi.booking.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +16,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import taxi.booking.project.model.BookingForm;
 import taxi.booking.project.model.ContactForm;
+import taxi.booking.project.model.ServiceForm;
 import taxi.booking.project.service.BookingFormService;
 import taxi.booking.project.service.ContactFormService;
 import taxi.booking.project.service.ContactFormServiceImpl;
+import taxi.booking.project.service.ServiceFormService;
 
 @Controller
 
 public class MyController {
 	private ContactFormService contactFormService;
 	private BookingFormService bookingFormService;
+	private ServiceFormService serviceFormService;
 	
+	
+	@Autowired
+	public void setServiceFromService(ServiceFormService serviceFormService) {
+		this.serviceFormService = serviceFormService;
+	}
+
 	@Autowired
 	public void setBookingFormService(BookingFormService bookingFormService) {
 		this.bookingFormService = bookingFormService;
@@ -63,7 +74,13 @@ public class MyController {
     public String servicesView(HttpServletRequest req,Model m) {
     	String requestURI = req.getRequestURI();
     	m.addAttribute("mycurrentPage",requestURI);
-        return "services";  // resolves to templates/services.html
+        
+    	//Data Collection
+    	List<ServiceForm> allServices = serviceFormService.readAllServices();
+    	m.addAttribute("allservices",allServices);
+    	
+    	return "services";  // resolves to templates/services.html
+        
     }
 
     @GetMapping("contacts")
